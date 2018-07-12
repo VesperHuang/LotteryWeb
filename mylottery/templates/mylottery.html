@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+
+    {% for item in mylottery %}
+        <div>id {{ item.id}} volume {{item.volume}} date {{item.date}}</div>
+    {% endfor %}
+
+{% endblock %}

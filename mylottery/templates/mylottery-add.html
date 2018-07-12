@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+    <form action="/mylottery_Adding" method="post">
+        {% csrf_token %}
+        <div>期 號：</div><input type="text" name="volume">
+        <div>開獎日期：</div><input type="text" name="date">
+        <div>號 碼：</div><input type="text" name="number">
+        <div><input type="submit" value="Submit"></div>
+    </form> 
+{% endblock %}

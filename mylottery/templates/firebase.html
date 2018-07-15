@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+    {% for key,value in result.items %}
+        <div>{{key}} : {{value}}</div>
+    {% endfor %}
+{% endblock %}

@@ -9,7 +9,7 @@ from django.db import models
 
 
 class BigLottery(models.Model):
-    volume = models.TextField(db_column='Volume', unique=True)  # Field name made lowercase.
+    volume = models.TextField(primary_key=True) 
     date = models.TextField()
     no1 = models.IntegerField()
     no2 = models.IntegerField()
@@ -48,7 +48,7 @@ class MyLottery(models.Model):
 
 
 class TwoWin(models.Model):
-    volume = models.TextField(unique=True)
+    volume = models.TextField(primary_key=True)
     date = models.TextField()
     no1 = models.IntegerField()
     no2 = models.IntegerField()

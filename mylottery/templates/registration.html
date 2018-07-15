@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+    <form action="/registration" method="post">
+        {% csrf_token %}
+        <div>帳 號：</div><input type="text" name="name">
+        <div>密 碼：</div><input type="text" name="passward">
+        <div>性 別：</div><input type="text" name="sex">
+        <div>生 日：</div><input type="text" name="birthday">
+        <div><input type="submit" value="Submit"></div>
+    </form> 
+{% endblock %}

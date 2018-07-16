@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+
+    <form action="/number_grid" method="post">
+        {% csrf_token %}
+        <div>第 <input type="text" name="startVolume"> 期 ~ 第 <input type="text" name="endVolume"> 期 <input type="submit" value="統 計"></div>
+    </form> 
+    </br>
+    {{innerHtml|safe}}    
+
+{% endblock %}

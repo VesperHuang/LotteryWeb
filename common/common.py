@@ -41,3 +41,48 @@ def getTableData(vSql):
 #    print(result)
     conn.close()#關閉資料庫連線
     return result
+
+def get_table_tag(number_list):
+
+    result = ""
+    result = "<table style='width:500px;'>"
+    
+    head = ""
+    head += "<tr style='height:20px;'>"
+    head += "<td>期 別</br>(日 期)</td>"
+    for column in range(1,25):
+        head += "<td>no-"+str(column)+"</td>"
+    head += "</tr>"
+    
+    temp = []    
+    result += head
+    for item in number_list:
+        temp.append(item.no1)
+        temp.append(item.no2)
+        temp.append(item.no3)
+        temp.append(item.no4)
+        temp.append(item.no5)
+        temp.append(item.no6)
+        temp.append(item.no7)
+        temp.append(item.no8)
+        temp.append(item.no9)
+        temp.append(item.no10)
+        temp.append(item.no11)
+        temp.append(item.no12)
+    
+        result += "<tr style='height:20px;'>"
+        result +="<td>"+ item.volume +"</br>("+ item.date +")</td>"
+        for column in range(1,25):
+            flag = "false"
+            for value in temp:
+                if (column == value):
+                    result += "<td>"+ str(value) +"</td>"
+                    flag = "true"
+                    temp.remove(value)
+            if(flag == "false"):
+                result += "<td> </td>"
+    
+        result +="<tr>"  
+        temp.clear()
+    result += "</table>"
+    return result

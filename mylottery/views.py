@@ -6,6 +6,7 @@ import common.models as models
 from firebase import firebase
 from mylottery.models import users
 
+
 def user_reg(request):    
     innerScript = ""
     if request.POST:
@@ -68,10 +69,10 @@ def firebase_operate(request):
     result =  fb.get('/students',None)
     return render(request, "firebase.html", {'result':result})     
 
-
 def mylottery(request):
     mylottery = models.MyLottery.objects.all().order_by('-volume')
-    return render(request, "myLottery.html", {'mylottery':mylottery}) 
+    innerHtml = com.get_table_tag(mylottery)
+    return render(request, "myLottery.html", {'innerHtml':innerHtml}) 
     
 def mylottery_add(request):
     return render(request, "myLottery-add.html")  
@@ -102,5 +103,6 @@ def mylottery_adding(request):
                     sql +=","          
         com.ExeSql(sql)
         
-    mylottery = models.MyLottery.objects.all().order_by('-volume')    
-    return render(request, "myLottery.html", {'mylottery':mylottery})    
+    mylottery = models.MyLottery.objects.all().order_by('-volume')
+    innerHtml = com.get_table_tag(mylottery)
+    return render(request, "myLottery.html", {'innerHtml':innerHtml})    

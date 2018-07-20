@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block mainbody %}
+
+    <form action="/number_grid" method="post">
+        {% csrf_token %}
+        <div>第 <input type="text" name="startVolume"> 期 ~ 第 <input type="text" name="endVolume"> 期 <input type="submit" value="統 計"></div>
+    </form> 
+    </br>
+    
+    <table style="border-style:solid;border-width:1px;">
+        <tr>
+            <td>期數</td>
+
+        {% for item in List %}
+           <td>{{ forloop.counter }}</td>
+        {% endfor %}
+        
+        </tr>
+
+    {% for number in number_list %}    
+        <tr>
+            <td>{{number.volume}} </br>({{number.date}})<td>
+            
+        {% for item in List %}
+            {% if forloop.counter == number["no" + forloop.counter] %}
+                <td>A</td>
+            {% else %}
+                <td></td>
+            {% endif%}
+        {% endfor %}
+        
+        
+        </tr>
+    {% endfor %}
+
+
+    </table>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block mainbody %}
-    <form action="/mylottery_Adding" method="post">
+    <form action="/mylottery_adding" method="post">
         {% csrf_token %}
         <div>期 號：</div><input type="text" name="volume">
         <div>開獎日期：</div><input type="text" name="date">

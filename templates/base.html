@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>菜鸟教程(runoob.com)</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
 <style>
 table, th, td {
     border: 1px solid black;
@@ -12,9 +13,27 @@ table, th, td {
 </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    {% block mainbody %}
+{% include "navigation.html" %}
 
-    {% endblock %}
+</br>
+</br>
+</br>   
+
+{% block mainbody %}
+
+{% endblock %}
+    
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+       $("li").click(function() {
+          // remove classes from all
+          $("li").removeClass("active");
+          // add class to the one we clicked
+          $(this).addClass("active");
+       });
+    });
+</script>
 </body>
 </html>

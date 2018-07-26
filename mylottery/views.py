@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from django.views.decorators import csrf
+from django.shortcuts import render,HttpResponse
+
 import common.common as com
 import common.models as models
 
 from firebase import firebase
 from mylottery.models import users
 
+
+import json
 
 def user_reg(request):    
     innerScript = ""
@@ -76,7 +78,7 @@ def mylottery(request):
     
 def mylottery_add(request):
     return render(request, "myLottery-add.html")  
-
+    
 def mylottery_adding(request):
     if request.POST:
         sql = ""
@@ -106,3 +108,29 @@ def mylottery_adding(request):
     mylottery = models.MyLottery.objects.all().order_by('-volume')
     innerHtml = com.get_table_tag(mylottery)
     return render(request, "myLottery.html", {'innerHtml':innerHtml})    
+
+def ajax_post(request):
+    ret = {'status': True, 'error': None, 'data': None}
+    try:   
+        if(request.method == "GET"):
+            return render(request, "ajax_post.html") 
+        elif(request.method == "POST"):
+            volume = request.POST.get('volume')
+            date = request.POST.get('date')
+            number = request.POST.get('number')
+
+            if( volume != "" and date !="" and number !=""):
+                pass
+            else:
+                ret['status'] = False
+                ret['error'] = "攔位不得為空！"   
+        
+        
+    except Exception as e:
+        ret['status'] = False
+        ret['error'] = '請求錯誤'
+    return HttpResponse(json.dumps(ret))
+
+
+
+

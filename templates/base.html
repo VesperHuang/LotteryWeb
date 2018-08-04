@@ -10,6 +10,9 @@ table, th, td {
     border-collapse: collapse;
     text-align: center;
 }
+.err_msg {
+    color:red;
+}
 </style>
 </head>
 <body>
@@ -24,16 +27,71 @@ table, th, td {
 {% endblock %}
     
 <script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/csrf.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-    $(function() {
-       $("li").click(function() {
-          // remove classes from all
-          $("li").removeClass("active");
-          // add class to the one we clicked
-          $(this).addClass("active");
-       });
+$( document ).ready(function() {
+    $("li").removeClass("active");
+    //console.log(location.pathname);
+        
+    $("li a").each(function(){
+        if($(this).attr("href") == location.pathname){
+            $(this).parents("li").addClass("active");
+        }
     });
+});
+
+$(function() {
+   $("li").click(function() {
+      // remove classes from all
+      $("li").removeClass("active");
+      // add class to the one we clicked
+      $(this).addClass("active");
+   });
+});
+
+$("#category").change(function(){
+    $.ajax({
+        type : 'POST',
+        url : 'ajax_category',
+        data : $.param({
+            category : $('select[name=category]').val()
+        }),
+        success : function(data){
+            var obj =JSON.parse(data)
+            if(obj.status){
+                $('#innerHtml').html(obj.data);
+                $('#innerHtml').removeClass("err_msg");
+            }
+            else{
+                $('#innerHtml').html(obj.error).addClass("err_msg");
+            }
+        }
+    });
+});
+
+$("#ajax_post").click(function () {
+	$.ajax({
+		type : 'POST',
+		url : 'ajax_post',
+		data : $.param({
+            category : $('form select[name=category]').val(),
+            volume : $('form input[name=volume]').val(),
+            date : $('form input[name=date]').val(),
+            number : $('form input[name=number]').val(),
+		}),
+		success : function (data) {
+    		var obj = JSON.parse(data);
+    		if(obj.status){
+        		 window.location.href = "/mylottery";
+        	}
+        	else{
+    			$('#innerHtml').html(obj.error).addClass("err_msg");
+    		}
+		}
+	});
+});
+
 </script>
 </body>
 </html>

@@ -6,6 +6,10 @@ import random
 import common.common as com
 
 def NumberCount(startVolume,endVolume):
+    
+    __category = "5" #雙贏彩
+    category_name = com.get_categroy_name(__category)
+     
     sql = ""
     sql = "select * from Two_Win where volume between \'" + startVolume + "\' and \'" + endVolume + "\' order by volume"
     rows = com.getTableData(sql)
@@ -46,7 +50,7 @@ def NumberCount(startVolume,endVolume):
 #    listy = list(dic_sort.values())
     listx = list_x
     listy = list_y
-    __title = startVolume +" 期 - "+ endVolume +" 期 號碼次數統計"
+    __title = category_name + " " + startVolume +" 期 - "+ endVolume +" 期 號碼次數統計"
     
     p = figure(x_range=listx, plot_height=250, title=__title,
                toolbar_location=None, tools="")

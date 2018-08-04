@@ -2,6 +2,13 @@
 
 {% block mainbody %}
 
-    {{innerHtml|safe}}  
-
+    <div>類別：</div>
+    <div>
+        <select id="category" name="category">
+        {% for item in category %}
+            <option value='{{item.id}}'>{{item.name}}</option>
+        {% endfor %}
+        </select>  
+    </div></br>       
+    <div id="innerHtml">{{innerHtml|safe}}</div>  
 {% endblock %}

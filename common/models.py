@@ -7,7 +7,10 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-
+class category(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.TextField()
+    
 class BigLottery(models.Model):
     volume = models.TextField(primary_key=True) 
     date = models.TextField()
@@ -29,18 +32,18 @@ class MyLottery(models.Model):
     category = models.TextField()
     volume = models.TextField()
     date = models.TextField()
-    no1 = models.IntegerField()
-    no2 = models.IntegerField()
-    no3 = models.IntegerField()
-    no4 = models.IntegerField()
-    no5 = models.IntegerField()
-    no6 = models.IntegerField()
-    no7 = models.IntegerField()
-    no8 = models.IntegerField()
-    no9 = models.IntegerField()
-    no10 = models.IntegerField()
-    no11 = models.IntegerField()
-    no12 = models.IntegerField()
+    no1 = models.IntegerField(default=0)
+    no2 = models.IntegerField(default=0)
+    no3 = models.IntegerField(default=0)
+    no4 = models.IntegerField(default=0)
+    no5 = models.IntegerField(default=0)
+    no6 = models.IntegerField(default=0)
+    no7 = models.IntegerField(default=0)
+    no8 = models.IntegerField(default=0)
+    no9 = models.IntegerField(default=0)
+    no10 = models.IntegerField(default=0)
+    no11 = models.IntegerField(default=0)
+    no12 = models.IntegerField(default=0)
 
     class Meta:
         managed = False

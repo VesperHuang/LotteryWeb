@@ -1,5 +1,5 @@
 import sqlite3
-
+import re
 __connectionString = ".\lottery.db"
 
 
@@ -143,4 +143,67 @@ def get_table_tag(lottery,category=""):
         result +="<tr>"  
         temp.clear()
     result += "</table>"
+    return result
+
+def get_compare_table_tag(lottery,category=""):
+
+    __category = ""
+    result = ""
+    result = "<table style='width:100%;'>"
+    
+    head = ""
+    head += "<tr style='height:20px;'>"
+    head += "<td width='20px'>期 別</br>(日 期)</td>"
+    
+    if(category != ""):
+        range_max = category_dic[category] + 1 
+        __category = category
+      
+    for column in range(1,range_max):
+        head += "<td width='20px'>"+str(column)+"</td>"
+    head += "</tr>"
+
+    result += head
+    for item in lottery:
+        result += "<tr style='height:20px;'>"
+        result +="<td>"+ item["volume"] +"</br>("+ item["date"] +")</td>"
+        for column in range(1,range_max):
+            flag = "false"
+            for value in item["result"]:
+                color = ""
+                number = ""
+                
+                if re.match(r'\*\+',str(value)) :
+                    pattern = re.compile(r'\d{1,2}') 
+                    n=re.search(pattern, value)
+                    
+                    color = "red"
+                    number = n.group()
+                elif re.match(r'\*\-',str(value)) :
+                    pattern = re.compile(r'\d{1,2}') 
+                    n=re.search(pattern, str(value))  
+                    
+                    color = "yellow"
+                    number = n.group()                    
+                else:
+                    pattern = re.compile(r'\d{1,2}') 
+                    n=re.search(pattern, str(value))
+
+                    color = ""
+                    number = n.group()  
+                    
+                if str(column) == number :
+                    if color != "" :
+                        print("column:",column,"number",number)
+                        result += "<td style = 'background-color:"+ color+";'>"+ number +"</td>"
+                    else:
+                       result += "<td style = 'background-color:gray'>"+ number +"</td>" 
+                    flag = "true"                       
+
+            if flag == "false":
+                result += "<td> </td>" 
+         
+        result +="<tr>"  
+    result += "</table>"
+    result += "<div>紅色：命中，黃色：開出，灰色：未中</div>"
     return result

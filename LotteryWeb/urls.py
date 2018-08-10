@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^mylottery_add$', mylottery_views.mylottery_add),
     url(r'^mylottery_adding$', mylottery_views.mylottery_adding),
     url(r'^mylottery_add_ajax$', mylottery_views.mylottery_add_ajax),
+    url(r'^lottery_compare$', mylottery_views.lottery_compare),
     url(r'^ajax_post$', mylottery_views.ajax_post),
     url(r'^ajax_category$', mylottery_views.ajax_category),
 ]

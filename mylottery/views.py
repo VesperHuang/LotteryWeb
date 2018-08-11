@@ -36,38 +36,67 @@ def CkeckKey(no,datas):
     return key_id
 
 def lottery_compare(request):
-    __category = "5"
-    __volume = "107000090"
-    
-    #setp1 get my lottery data filter is category and volume
-    mylottery = models.MyLottery.objects.filter(category = __category,volume = __volume).order_by('-volume')
-    
+    ACTION = "/lottery_compare"
+    __category = ""
+    __startVolume = ""
+    __endVolume = ""
+
+    #post
+    if request.POST: 
+        if(request.POST['category'] != ""):        
+            __category = request.POST['category']
+        if(request.POST['startVolume'] != ""):        
+            __startVolume = request.POST['startVolume']                                      
+        if(request.POST['endVolume'] != ""):        
+            __endVolume = request.POST['endVolume']   
+        
+#        print("category:",__category_post,"startVolume",__startVolume,"endVolume",__endVolume)
+        mylottery = models.MyLottery.objects.filter(category = __category,volume__range=[__startVolume,__endVolume]).order_by('-volume')
+        
+    else:   
+        #setp1 get my lottery data filter is category and volume    
+        #page load get twowin last 10
+        __category = "5"
+        mylottery = models.MyLottery.objects.filter(category = __category).order_by('-volume')[:10]
+        __startVolume = mylottery[9].volume
+        __endVolume = mylottery[0].volume
+        
     #setp2 get lotery number filter equal my lottery 
-    number_list = []
+    volumn_number_list = []
     if(__category == "2"):
-        lottery = models.BigLottery.objects.filter(volume = __volume)
-        number_list.append(lottery[0].no1)
-        number_list.append(lottery[0].no2)
-        number_list.append(lottery[0].no3)
-        number_list.append(lottery[0].no4)
-        number_list.append(lottery[0].no5)
-        number_list.append(lottery[0].no6)
-        number_list.append(lottery[0].special)
+#        lottery = models.BigLottery.objects.filter(volume = __volume)
+        lottery = models.BigLottery.objects.filter(volume__range=[__startVolume,__endVolume])
+        for item in lottery:
+            number_list=[]
+            number_list.append(item.volume)
+            number_list.append(item.no1)
+            number_list.append(item.no2)
+            number_list.append(item.no3)
+            number_list.append(item.no4)
+            number_list.append(item.no5)
+            number_list.append(item.no6)
+            number_list.append(item.special)
+            volumn_number_list.append(number_list)
         
     elif(__category == "5"):
-        lottery = models.TwoWin.objects.filter(volume = __volume)
-        number_list.append(lottery[0].no1)
-        number_list.append(lottery[0].no2)
-        number_list.append(lottery[0].no3)
-        number_list.append(lottery[0].no4)
-        number_list.append(lottery[0].no5)
-        number_list.append(lottery[0].no6)
-        number_list.append(lottery[0].no7)
-        number_list.append(lottery[0].no8)
-        number_list.append(lottery[0].no9)
-        number_list.append(lottery[0].no10)
-        number_list.append(lottery[0].no11)
-        number_list.append(lottery[0].no12)    
+#        lottery = models.TwoWin.objects.filter(volume = __volume)
+        lottery = models.TwoWin.objects.filter(volume__range=[__startVolume,__endVolume])
+        for item in lottery:
+            number_list = []  
+            number_list.append(item.volume)
+            number_list.append(item.no1)
+            number_list.append(item.no2)
+            number_list.append(item.no3)
+            number_list.append(item.no4)
+            number_list.append(item.no5)
+            number_list.append(item.no6)
+            number_list.append(item.no7)
+            number_list.append(item.no8)
+            number_list.append(item.no9)
+            number_list.append(item.no10)
+            number_list.append(item.no11)
+            number_list.append(item.no12)
+            volumn_number_list.append(number_list)
         
     #setp3 compare,my lottery loop to check lottery number then markup hit number
     result = []
@@ -97,24 +126,28 @@ def lottery_compare(request):
             my_number_list.append(item.no11)
             my_number_list.append(item.no12)            
         
-        for number in number_list:
-            flag= "false"
-            for my_number in my_number_list:
-                if(number == my_number):
-                    my_number_list.remove(my_number)
-                    my_number_list.append("*+" + str(number))
-                    flag = "true"
-            
-            if(flag == "false"):
-                my_number_list.append("*-" + str(number))
+        for volumn in volumn_number_list:
+            if item.volume == volumn[0]:
+                for number in volumn[1:]:
+                    flag= "false"
+                    for my_number in my_number_list:
+                        if(number == my_number):
+                            my_number_list.remove(my_number)
+                            my_number_list.append("*+" + str(number))
+                            flag = "true"
                     
-        my_lottery_item['result'] = my_number_list
-        result.append(my_lottery_item)
+                    if(flag == "false"):
+                        my_number_list.append("*-" + str(number))
+                            
+                my_lottery_item['result'] = my_number_list
+                result.append(my_lottery_item)
     
     #setp3 create html table tag 
-    category = models.category.objects.all().order_by('id')
-    innerHtml = com.get_compare_table_tag(result,"5")
-    return render(request, "lottery_compare.html", {'category':category,'innerHtml':innerHtml})   
+    category_name = com.get_categroy_name(__category)
+    category = models.category.objects.filter(switch = 'on').order_by('id')
+    innerHtml = "<div> 查詢：" + category_name + " 第 "+__startVolume+" 期 ～ 第 "+__endVolume+" 期 開出號碼</div></br>"
+    innerHtml += com.get_compare_table_tag(result,"5")
+    return render(request, "lottery_compare.html", {'ACTION':ACTION,'category':category,'innerHtml':innerHtml})   
 
 def firebase_operate(request):       
 #    from firebase_admin import credentials 
@@ -157,8 +190,8 @@ def mylottery(request):
 #    mylottery = models.MyLottery.objects.filter(category = 5).order_by('-volume')
 #    innerHtml = com.get_table_tag(mylottery)
 #    return render(request, "myLottery.html", {'innerHtml':innerHtml}) 
-    category = models.category.objects.all().order_by('id')
-    mylottery = models.MyLottery.objects.filter(category = 5).order_by('-volume')
+    category = models.category.objects.filter(switch = 'on').order_by('id')
+    mylottery = models.MyLottery.objects.filter(category = 5).order_by('-volume')[:10]
     innerHtml = com.get_table_tag(mylottery)
     return render(request, "myLottery.html", {'category':category,'innerHtml':innerHtml})     
     
@@ -222,8 +255,8 @@ def ajax_category(request):
     try:
         if(request.method == "POST"):
             category_id = request.POST.get('category')
-#            print(category_id)
-            mylottery = models.MyLottery.objects.filter(category = category_id).order_by('-volume')
+            print("category_id:",category_id)
+            mylottery = models.MyLottery.objects.filter(category = category_id).order_by('-volume')[:10]
             innerHtml = com.get_table_tag(mylottery)
             ret['data'] = innerHtml 
         else:

@@ -1,0 +1,14 @@
+    <form action='{{ACTION}}' method="post">
+        {% csrf_token %}
+
+        <div>類別：
+            <select id="category" name="category">
+                <option value=''></option>
+            {% for item in category %}
+                <option value='{{item.id}}'>{{item.name}}</option>
+            {% endfor %}
+            </select>  
+        </div></br>          
+        
+        <div>第 <input type="text" name="startVolume"> 期 ~ 第 <input type="text" name="endVolume"> 期 <input type="submit" value="統 計"></div>
+    </form></br> 

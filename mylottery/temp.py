@@ -5,6 +5,7 @@ Created on Thu Aug  9 09:33:24 2018
 @author: Vepser
 """
 import re
+import sys
 
 list = []
 temp_list1 = ["*+32","*+2","*+3","*-4","5","6"]
@@ -67,7 +68,10 @@ number_1 = list[0]["list"][0]
 #print(type(m))
 #
 
-pattern = re.compile(r'\d{1,2}') 
-n=re.search(pattern, str(number_1))
-print(type(n))
-print(n.group())  
+#pattern = re.compile(r'\d{1,2}') 
+#n=re.search(pattern, str(number_1))
+#print(type(n))
+#print(n.group())  
+
+
+print(sys.path)

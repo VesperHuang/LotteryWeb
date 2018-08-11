@@ -7,28 +7,33 @@ import analysis.analysis as analysis
 
 # Create your views here.
 def number_count(request):
+    ACTION = "/number_count"
+    __category = "5" #雙贏彩
     __startVolume = ""
     __endVolume = ""
-    innerTag = ""
+    innerHtml = ""
     
     if request.POST:
+        __category = request.POST['category']
         __startVolume = request.POST['startVolume']
         __endVolume = request.POST['endVolume']
     
         if (__startVolume !="" and __endVolume!=""): 
-            imgName = analysis.NumberCount(__startVolume,__endVolume)
+            imgName = analysis.NumberCount(__category,__startVolume,__endVolume)
             url = static('temp/' + imgName)
-            innerTag = "<img src=\""+ url +"\" >"
+            innerHtml = "<img src=\""+ url +"\" >"
         else:
-            innerTag = "<div style=\"color:red\">期號不得為空！！</div>"
-            
-    return render(request, 'number_count.html', {'innerTag': innerTag})
+            innerHtml = "<div style=\"color:red\">期號不得為空！！</div>"
+    
+    category = models.category.objects.filter(switch = 'on').order_by('id')        
+    return render(request, 'number_count.html', {'ACTION':ACTION,'category':category,'innerHtml': innerHtml})
 
 
 def number_grid(request):
+    ACTION = "/number_grid"
+    __category = "5" #雙贏彩
     __startVolume = ""
     __endVolume = ""
-    __category = "5" #雙贏彩
     category_name = com.get_categroy_name(__category)
     innerHtml = ""
     
@@ -56,8 +61,8 @@ def number_grid(request):
         innerHtml = "<div>" + category_name + " 近10期 開出號碼</div></br>"
         innerHtml += com.get_table_tag(number_list,__category)
 
-    category = models.category.objects.all().order_by('id')
-    return render(request, 'number_grid.html', {'category':category,'innerHtml':innerHtml})
+    category = models.category.objects.filter(switch = 'on').order_by('id')
+    return render(request, 'number_grid.html', {'ACTION':ACTION,'category':category,'innerHtml':innerHtml})
 
 
 

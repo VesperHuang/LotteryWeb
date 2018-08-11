@@ -194,7 +194,6 @@ def get_compare_table_tag(lottery,category=""):
                     
                 if str(column) == number :
                     if color != "" :
-                        print("column:",column,"number",number)
                         result += "<td style = 'background-color:"+ color+";'>"+ number +"</td>"
                     else:
                        result += "<td style = 'background-color:gray'>"+ number +"</td>" 

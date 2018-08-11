@@ -10,6 +10,7 @@ from django.db import models
 class category(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.TextField()
+    switch = models.TextField()
     
 class BigLottery(models.Model):
     volume = models.TextField(primary_key=True) 

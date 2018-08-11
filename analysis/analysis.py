@@ -5,9 +5,9 @@ import os,shutil
 import random
 import common.common as com
 
-def NumberCount(startVolume,endVolume):
+def NumberCount(category,startVolume,endVolume):
     
-    __category = "5" #雙贏彩
+    __category = category
     category_name = com.get_categroy_name(__category)
      
     sql = ""

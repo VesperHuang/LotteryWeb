@@ -102,13 +102,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+ALLOWED_HOSTS = ['0.0.0.0']
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 

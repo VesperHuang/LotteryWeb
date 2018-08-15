@@ -1,4 +1,5 @@
-from bokeh.io import export_png
+#from bokeh.io import export_png
+from bokeh.io import output_file,save
 from bokeh.plotting import figure
 
 import os,shutil
@@ -7,11 +8,12 @@ import common.common as com
 
 def NumberCount(category,startVolume,endVolume):
     
+    __result = ""
     __category = category
     category_name = com.get_categroy_name(__category)
      
     sql = ""
-    sql = "select * from Two_Win where volume between \'" + startVolume + "\' and \'" + endVolume + "\' order by volume"
+    sql = "select * from [Two_Win] where volume between \'" + startVolume + "\' and \'" + endVolume + "\' order by volume"
     rows = com.getTableData(sql)
     
     #建立 1 到 24 字典 做為儲存統計用
@@ -45,7 +47,8 @@ def NumberCount(category,startVolume,endVolume):
         list_y.append(t[1])
     
     #顯示柱狀圖(bokeh) 
-    #output_file("bars.html")
+    __filename = str(random.randrange(0,10001,4)) + "-bars.html"    
+    output_file(__filename)
 #    listx = list(dic_sort.keys())
 #    listy = list(dic_sort.values())
     listx = list_x
@@ -58,21 +61,33 @@ def NumberCount(category,startVolume,endVolume):
     
     p.xgrid.grid_line_color = None
     p.y_range.start = 0
-    #show(p)
+    save(p)
     
-    __filename = str(random.randrange(0,10001,4)) + "-bars.png"
-    export_png(p,filename=__filename) #因為想嵌套至其它網頁中 故改成圖檔輸出 方便操做
-    
-#        cur_path = os.path.dirname(__file__) #取得目前的目錄路徑   
-#        print(cur_path)
     file = os.path.abspath(__filename) #傳回檔案完整的路徑名稱
-    
     if os.path.exists(file):
+        f = open(file,'r')
+        __result = f.read()
+        
         #將檔案移到 static/temp 底下 
-        __source_file_path = "C:\\ProgramData\\Anaconda3\\Scripts\\LotteryWeb\\" + __filename
-        __target_file_path = "C:\\ProgramData\\Anaconda3\\Scripts\\LotteryWeb\\analysis\\static\\temp\\" + __filename            
-        shutil.move(__source_file_path,__target_file_path)            
-    return __filename
+        __source_file_path = "/home/vesper/workspace/lotteryweb/" + __filename
+        __target_file_path = "/home/vesper/workspace/lotteryweb/analysis/static/temp/" + __filename            
+        shutil.move(__source_file_path,__target_file_path)              
+#    print(__result)
+
+#    bokeh can't call  gt5ct  at linux     
+#    __filename = str(random.randrange(0,10001,4)) + "-bars.png"
+#    export_png(p,filename=__filename) #因為想嵌套至其它網頁中 故改成圖檔輸出 方便操做
+#    
+##        cur_path = os.path.dirname(__file__) #取得目前的目錄路徑   
+##        print(cur_path)
+#    file = os.path.abspath(__filename) #傳回檔案完整的路徑名稱
+#    
+#    if os.path.exists(file):
+#        #將檔案移到 static/temp 底下 
+#        __source_file_path = "C:\\ProgramData\\Anaconda3\\Scripts\\LotteryWeb\\" + __filename
+#        __target_file_path = "C:\\ProgramData\\Anaconda3\\Scripts\\LotteryWeb\\analysis\\static\\temp\\" + __filename            
+#        shutil.move(__source_file_path,__target_file_path)            
+    return __result
 
 
 

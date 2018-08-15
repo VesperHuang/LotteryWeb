@@ -7,6 +7,13 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+class user_search_log(models.Model):
+    user_name = models.TextField()
+    active = models.TextField()
+    condiction = models.TextField()
+    result = models.TextField()  
+    date_time = models.DateTimeField()
+
 class category(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.TextField()

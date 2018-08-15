@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.templatetags.static import static
+import datetime
 
 import common.common as com
 import common.models as models
 import analysis.analysis as analysis
+
 
 # Create your views here.
 def number_count(request):
@@ -17,17 +19,31 @@ def number_count(request):
         __category = request.POST['category']
         __startVolume = request.POST['startVolume']
         __endVolume = request.POST['endVolume']
-    
-        if (__startVolume !="" and __endVolume!=""): 
-            imgName = analysis.NumberCount(__category,__startVolume,__endVolume)
-            url = static('temp/' + imgName)
-            innerHtml = "<img src=\""+ url +"\" >"
+        
+        if (__category !="" and __startVolume !="" and __endVolume!=""): 
+            innerHtml = analysis.NumberCount(__category,__startVolume,__endVolume)
+#            print(innerHtml)
+#            imgName = analysis.NumberCount(__category,__startVolume,__endVolume)
+#            url = static('temp/' + imgName)
+#            innerHtml = "<img src=\""+ url +"\" >"
+            
+#            20180813 add record user search log
+            user_search_log = models.user_search_log()
+            user_search_log.user_name = request.session['user_name'] 
+            user_search_log.active = ACTION
+            user_search_log.condiction = "'category':'" + __category + "','startVolume':'" + __startVolume +"','endVolume':'"+__endVolume+"'"
+            user_search_log.result = innerHtml
+            user_search_log.date_time = datetime.datetime.now()
+            user_search_log.save()
         else:
-            innerHtml = "<div style=\"color:red\">期號不得為空！！</div>"
+            innerHtml = "<div style=\"color:red\">條件不得為空！！</div>"
+    else:
+        if (request.session.get('user_name',False) ):
+            user_search_log = models.user_search_log.objects.filter(user_name = request.session['user_name'] ).order_by('-id')[:1]
+            innerHtml = user_search_log[0].result       
     
     category = models.category.objects.filter(switch = 'on').order_by('id')        
     return render(request, 'number_count.html', {'ACTION':ACTION,'category':category,'innerHtml': innerHtml})
-
 
 def number_grid(request):
     ACTION = "/number_grid"

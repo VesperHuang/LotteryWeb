@@ -6,6 +6,7 @@
         
         <div>類別：</div>
         <select name="category">
+        <option value=''></option>
         {% for item in category %}
             <option value='{{item.id}}'>{{item.name}}</option>
         {% endfor %}

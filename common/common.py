@@ -1,6 +1,6 @@
 import sqlite3
 import re
-__connectionString = ".\lottery.db"
+__connectionString = "/home/vesper/workspace/lotteryweb/lottery.db"
 
 
 category_dic = {

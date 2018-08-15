@@ -4,10 +4,8 @@ import common.common as com
 import common.models as models
 import json
 
-from firebase import firebase
+#from firebase import firebase
 from mylottery.models import users
-
-
 
 def user_reg(request):    
     innerScript = ""
@@ -149,42 +147,42 @@ def lottery_compare(request):
     innerHtml += com.get_compare_table_tag(result,"5")
     return render(request, "lottery_compare.html", {'ACTION':ACTION,'category':category,'innerHtml':innerHtml})   
 
-def firebase_operate(request):       
-#    from firebase_admin import credentials 
-#    cred = credentials.Certificate("path/to/serviceAccountKey.json")
-#    fb = firebase_admin.initialize_app(cred)    
-    
-    url="https://lottery-web-d3348.firebaseio.com"
-#    auth = firebase.FirebaseAuthentication('iHKdPXaSRUVgf8RoZw4xh8gJBk03','deepvesper@gmail.com')
-    fb = firebase.FirebaseApplication(url,None)
-    
-# 新增
-    students=[
-            {'no':1,'name':'李天龍'}]
-    
-    for sutdent in students:
-        fb.post('/students',sutdent)
-
-# 刪除    
-# =============================================================================
-#     datas =  fb.get('/students',None)
-#     no = 1
-#     key_id = CkeckKey(no,datas)
-#     fb.delete('/students/' + key_id,None)
-#     result = fb.get('/students',None)
-# =============================================================================
-    
-# 修改
-# =============================================================================
-#     datas =  fb.get('/students',None)
-#     no = 2
-#     key_id = CkeckKey(no,datas)
-#     data = {"no":int(2),"name":"梁靜茹"}
-#     fb.put(url+'/students/',data=data,name=key_id)
-# =============================================================================
-    
-    result =  fb.get('/students',None)
-    return render(request, "firebase.html", {'result':result})     
+#def firebase_operate(request):       
+##    from firebase_admin import credentials 
+##    cred = credentials.Certificate("path/to/serviceAccountKey.json")
+##    fb = firebase_admin.initialize_app(cred)    
+#    
+#    url="https://lottery-web-d3348.firebaseio.com"
+##    auth = firebase.FirebaseAuthentication('iHKdPXaSRUVgf8RoZw4xh8gJBk03','deepvesper@gmail.com')
+#    fb = firebase.FirebaseApplication(url,None)
+#    
+## 新增
+#    students=[
+#            {'no':1,'name':'李天龍'}]
+#    
+#    for sutdent in students:
+#        fb.post('/students',sutdent)
+#
+## 刪除    
+## =============================================================================
+##     datas =  fb.get('/students',None)
+##     no = 1
+##     key_id = CkeckKey(no,datas)
+##     fb.delete('/students/' + key_id,None)
+##     result = fb.get('/students',None)
+## =============================================================================
+#    
+## 修改
+## =============================================================================
+##     datas =  fb.get('/students',None)
+##     no = 2
+##     key_id = CkeckKey(no,datas)
+##     data = {"no":int(2),"name":"梁靜茹"}
+##     fb.put(url+'/students/',data=data,name=key_id)
+## =============================================================================
+#    
+#    result =  fb.get('/students',None)
+#    return render(request, "firebase.html", {'result':result})     
 
 def mylottery(request):
 #    mylottery = models.MyLottery.objects.filter(category = 5).order_by('-volume')
@@ -193,11 +191,11 @@ def mylottery(request):
     category = models.category.objects.filter(switch = 'on').order_by('id')
     mylottery = models.MyLottery.objects.filter(category = 5).order_by('-volume')[:10]
     innerHtml = com.get_table_tag(mylottery)
-    return render(request, "myLottery.html", {'category':category,'innerHtml':innerHtml})     
+    return render(request, "mylottery.html", {'category':category,'innerHtml':innerHtml})     
     
 def mylottery_add(request):
-    category = models.category.objects.all().order_by('id')
-    return render(request, "myLottery-add.html",{'category':category})  
+    category = models.category.objects.filter(switch = 'on').order_by('id')
+    return render(request, "mylottery-add.html",{'category':category})  
     
 def mylottery_adding(request):
     innerHtml =""
@@ -247,7 +245,7 @@ def mylottery_adding(request):
     return render(request, "myLottery.html", {'innerHtml':innerHtml})    
 
 def mylottery_add_ajax(request):
-    category = models.category.objects.all().order_by('id')
+    category = models.category.objects.filter(switch = 'on').order_by('id')
     return render(request, "ajax_post.html",{'category':category})     
 
 def ajax_category(request):

@@ -142,7 +142,7 @@ def get_table_tag(lottery,category=""):
     
         result +="<tr>"  
         temp.clear()
-    result += "</table>"
+    result += "</table></br>"
     return result
 
 def get_compare_table_tag(lottery,category=""):
@@ -204,5 +204,5 @@ def get_compare_table_tag(lottery,category=""):
          
         result +="<tr>"  
     result += "</table>"
-    result += "<div>紅色：命中，黃色：開出，灰色：未中</div>"
+    result += "<div>紅色：命中，黃色：開出，灰色：未中</div></br>"
     return result

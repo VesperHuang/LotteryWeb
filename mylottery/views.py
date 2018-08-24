@@ -61,7 +61,7 @@ def lottery_compare(request):
         
     #setp2 get lotery number filter equal my lottery 
     volumn_number_list = []
-    if(__category == "2"):
+    if(__category.isdigit() and __category == "2"):
 #        lottery = models.BigLottery.objects.filter(volume = __volume)
         lottery = models.BigLottery.objects.filter(volume__range=[__startVolume,__endVolume])
         for item in lottery:
@@ -76,7 +76,7 @@ def lottery_compare(request):
             number_list.append(item.special)
             volumn_number_list.append(number_list)
         
-    elif(__category == "5"):
+    elif(__category.isdigit() and __category == "5"):
 #        lottery = models.TwoWin.objects.filter(volume = __volume)
         lottery = models.TwoWin.objects.filter(volume__range=[__startVolume,__endVolume])
         for item in lottery:
@@ -102,7 +102,7 @@ def lottery_compare(request):
         my_number_list = []
         my_lottery_item = {"id":item.id,"volume":item.volume,"date":item.date,"result":my_number_list}    
         
-        if(__category == "2"):
+        if(__category.isdigit() and __category == "2"):
             my_number_list.append(item.no1)
             my_number_list.append(item.no2)
             my_number_list.append(item.no3)
@@ -110,7 +110,7 @@ def lottery_compare(request):
             my_number_list.append(item.no5)
             my_number_list.append(item.no6)        
         
-        elif(__category == "5"):        
+        elif(__category.isdigit() and __category == "5"):        
             my_number_list.append(item.no1)
             my_number_list.append(item.no2)
             my_number_list.append(item.no3)
@@ -189,7 +189,7 @@ def mylottery(request):
 #    innerHtml = com.get_table_tag(mylottery)
 #    return render(request, "myLottery.html", {'innerHtml':innerHtml}) 
     category = models.category.objects.filter(switch = 'on').order_by('id')
-    mylottery = models.MyLottery.objects.filter(category = 5).order_by('-volume')[:10]
+    mylottery = models.MyLottery.objects.filter(category = 2).order_by('-volume')[:10]
     innerHtml = com.get_table_tag(mylottery)
     return render(request, "mylottery.html", {'category':category,'innerHtml':innerHtml})     
     

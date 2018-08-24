@@ -70,6 +70,16 @@ def number_grid(request):
             
             innerHtml = "<div> 查詢：" + category_name + " 第 "+__startVolume+" 期 ～ 第 "+__endVolume+" 期 開出號碼</div></br>"
             innerHtml += com.get_table_tag(number_list,__category)
+        elif(__category != "" and __startVolume =="" and __endVolume ==""):
+            if (__category == "2"):
+                model = models.BigLottery
+            elif(__category == "5"):
+                model = models.TwoWin
+           
+            number_list = model.objects.order_by('-volume').all()[:10]
+            
+            innerHtml = "<div>" + category_name + " 近10期 開出號碼</div></br>"
+            innerHtml += com.get_table_tag(number_list,__category)            
         else:
             innerHtml = "<div style=\"color:red\">期號不得為空！！</div>"
     else:

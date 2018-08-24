@@ -3,9 +3,8 @@
 {% block mainbody %}
     <form>
         {% csrf_token %}
-        
         <div>類別：</div>
-        <select name="category">
+        <select id = "mylottery_input_category" name="category">
         <option value=''></option>
         {% for item in category %}
             <option value='{{item.id}}'>{{item.name}}</option>
@@ -14,7 +13,7 @@
         
         <div>期 號：</div><input type="text" id="volume" name="volume">
         <div>開獎日期：</div><input type="text" id="date" name="date">
-        <div>號 碼：</div><input type="text" id="number" name="number">
+        <div>號 碼：</div> <div id="div_number"> </div>
         <div><input id="ajax_post" type="button" value="Submit"></div>
     </form> 
     <div id="msg"></div>

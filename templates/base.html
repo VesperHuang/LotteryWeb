@@ -70,26 +70,66 @@ $("#category_ajax").change(function(){
     });
 });
 
+$("#mylottery_input_category").change(function(){
+    var my_select_option = $("#mylottery_input_category").val();
+    var count = 1;
+    var max = 0;
+    
+    if(my_select_option == 2){
+        count = 6;
+        max = 49;
+    }
+    else if(my_select_option == 5){
+        count =12;
+        max = 24;
+    }
+    
+    var  innerHtml = ""
+    for(i=1;i<=count;i++){
+        id = "number_" + i ;
+        innerHtml += "<input type='number' id='"+id+"' min='1' max='"+max+"'  style = 'width:50px;'> "; 
+    }
+    $("#div_number").html(innerHtml);
+});
+
 $("#ajax_post").click(function () {
+         var count = 0 ;
+         var _category =  $('form select[name=category]').val();
+         var _numbers = "";
+
+            if(my_select_option == 2){
+                count = 6;
+              }
+            else if(my_select_option == 5){
+                count =12;
+            }
+
+            for(i=1;i<=count;i++){
+                id = "number_" + i ;
+                _numbers += $("#"+id).val() + ","; 
+            }
+            _numbers = _numbers.substring(0,_numbers.length-1);
+            
 	$.ajax({
 		type : 'POST',
 		url : 'ajax_post',
 		data : $.param({
-            category : $('form select[name=category]').val(),
-            volume : $('form input[name=volume]').val(),
-            date : $('form input[name=date]').val(),
-            number : $('form input[name=number]').val(),
+                        category : _category,
+                        volume : $('form input[name=volume]').val(),
+                        date : $('form input[name=date]').val(),
+                        number : _numbers,
 		}),
 		success : function (data) {
-    		var obj = JSON.parse(data);
-    		if(obj.status){
-        		 window.location.href = "/mylottery";
-        	}
-        	else{
-    			$('#innerHtml').html(obj.error).addClass("err_msg");
-    		}
-		}
+                        	var obj = JSON.parse(data);
+            		if(obj.status){
+                        		 window.location.href = "/mylottery";
+                        	}
+                        	else{
+            			$('#innerHtml').html(obj.error).addClass("err_msg");
+            		}
+            	}
 	});
+
 });
 
 </script>
